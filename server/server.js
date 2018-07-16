@@ -1,9 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+var express = require('express');
+var bodyParser = require('body-parser');
 
-const {mongoose} = require('./db/mongoose');
-const {Todo} = require('./models/todo');
-const {User} = require('./models/user');
+var {mongoose} = require('./db/mongoose');
+var {Todo} = require('./models/todo');
+var {User} = require('./models/user');
 
 var app = express();
 
@@ -16,15 +16,21 @@ app.post('/todos', (req, res) => {
 
   todo.save().then((doc) => {
     res.send(doc);
-  }, (err) => {
-    res.status(400).send(err);
+  }, (e) => {
+    res.status(400).send(e);
+  });
+});
+
+app.get('/todos', (req, res) => {
+  Todo.find().then((todos) => {
+    res.send({todos})
+  }, (e) => {
+    res.status(400).send(e);
   });
 });
 
 app.listen(3000, () => {
   console.log('Started on port 3000');
-}, (err) => {
-  console.log(err);
 });
 
 module.exports = {app};
